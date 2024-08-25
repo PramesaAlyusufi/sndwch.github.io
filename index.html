@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Data Tabel</title>
+    <link rel="stylesheet" href="css/w3.css">
+    <style>
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            background-color: #ffffff;
+            color: rgb(0, 0, 0);
+            white-space: nowrap;
+            box-sizing: border-box;
+        }
+        .marquee {
+            font-size: 35px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            text-shadow: 2px 4px 8px black;
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 10s linear infinite, colorChange 5s linear infinite;
+        }
+        @keyframes marquee {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+        }
+        @keyframes colorChange {
+            0% { color: rgb(0, 255, 238); }
+            25% { color: rgb(0, 8, 255); }
+            50% { color: rgb(142, 5, 255); }
+            75% { color: blue; }
+            100% { color: rgb(255, 6, 188); }
+        }
+        body {
+            background-color: rgba(225, 224, 223, 0.842);
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-container {
+            font-size: 15px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            margin-bottom: 20px;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .form-container input, .form-container select {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            width: 20%;
+        }
+        button {
+            padding: 10px;
+            display: block;
+            background-color: #1d5db7;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            color: #000000;
+            background-color: #ffffff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table-container {
+            display: none;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #3330ff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .pay-button {
+            display: none;
+            background-color: #007bff;
+        }
+        .pay-button:hover {
+            background-color: #0056b3;
+        }
+        .qr-container {
+            display: none;
+            margin-top: 20px;
+        }
+        .thank-you-message {
+            display: none;
+            margin-top: 20px;
+            font-size: 20px;
+            color: rgb(16, 146, 29);
+        }
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+            max-width: 400px;
+            text-align: center;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+                width: 100%;
+            }
+            thead {
+                display: none; /* Sembunyikan header tabel */
+            }
+            tr {
+                margin-bottom: 15px;
+                display: block;
+                border-bottom: 2px solid #ddd;
+            }
+            td {
+                display: flex;
+                justify-content: space-between;
+                padding-left: 47%;
+                text-align: right;
+                position: relative;
+            }
+            td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 45%;
+                padding-left: 15px;
+                font-weight: bold;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="marquee-container">
+        <div class="marquee">SELAMAT DATANG DI SHINTA CAKE</div>
+    </div>
+
+    <div class="form-container">
+        <h2>SELAMAT MEMESAN</h2>
+        <form id="dataForm">
+            <label for="category">Produk :</label>
+            <select id="category" name="category" required>
+                <option value="Mochi">Mochi</option>
+                <option value="Sando">Sando</option>
+                <option value="Slice Cake">Slice Cake</option>
+            </select>
+
+            <label for="quantity">Jumlah :</label>
+            <input type="number" id="quantity" name="quantity" min="1" max="100" step="1" value="1">
+
+            <button type="submit">Tambahkan</button>
+        </form>
+    </div>
+
+    <div class="table-container" id="tableContainer">
+        <h2>RINCIAN PESANAN:</h2>
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>Nama Produk</th>
+                    <th>Jumlah</th>
+                    <th>Harga</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div class="total-container">
+            Total Keseluruhan: <span id="totalAmount">Rp 0</span>
+        </div>
+    </div>
+
+    <button class="pay-button" id="payButton">BAYAR</button>
+
+    <div id="qrModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Silakan scan QR code untuk membayar:</p>
+            <img src="css/QR.jpg" alt="QR Code" style="width:200px;">
+        </div>
+    </div>
+
+    <div class="thank-you-message" id="thankYouMessage">
+        Terima Kasih Telah Membayar!
+    </div>
+
+    <script>
+        const productPrices = {
+            "Mochi": 5000,  
+            "Sando": 10000,
+            "Slice Cake": 15000
+        };
+
+        document.getElementById('dataForm').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+            const product = document.getElementById('category').value;
+            const quantity = document.getElementById('quantity').value;
+
+            const unitPrice = productPrices[product];
+
+            const totalPrice = unitPrice * quantity;
+
+            const table = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+
+            const cell1 = newRow.insertCell(0);
+            const cell2 = newRow.insertCell(1);
+            const cell3 = newRow.insertCell(2);
+            const cell4 = newRow.insertCell(3);
+
+            cell1.textContent = product;
+            cell2.textContent = quantity;
+            cell3.textContent = `Rp ${unitPrice.toLocaleString()}`;
+            cell4.textContent = `Rp ${totalPrice.toLocaleString()}`;
+            
+            updateTotalAmount();
+
+            document.getElementById('tableContainer').style.display = 'block';
+            document.getElementById('payButton').style.display = 'block';
+        });
+
+        function updateTotalAmount() {
+            const rows = document.querySelectorAll('#dataTable tbody tr');
+            let total = 0;
+            rows.forEach(row => {
+                const totalCell = row.cells[3];
+                const totalPrice = parseInt(totalCell.textContent.replace(/Rp\s/g, '').replace(/,/g, ''));
+                total += totalPrice;
+            });
+
+            document.getElementById('totalAmount').textContent = `Rp ${total.toLocaleString()}.000`;
+        }
+
+        function updateOrderSummary() {
+            const rows = document.querySelectorAll('#dataTable tbody tr');
+            let summary = "<ul>";
+            rows.forEach(row => {
+                const product = row.cells[0].textContent;
+                const quantity = row.cells[1].textContent;
+                const total = row.cells[3].textContent;
+                summary += `<li>${product}: ${quantity} x ${total}</li>`;
+            });
+            summary += "</ul>";
+            document.getElementById('orderSummary').innerHTML = summary;
+        }
+
+        const modal = document.getElementById("qrModal");
+        const closeBtn = document.getElementsByClassName("close")[0];
+
+        document.getElementById('payButton').addEventListener('click', function() {
+
+            setTimeout(function() {
+                    modal.style.display = "block";
+                }, 1000);
+        });
+
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+            alert("Terima Kasih Telah Membayar!"); 
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+                alert("Terima Kasih Telah Membayar!"); 
+            }
+        }
+    </script>
+</body>
+</html>
